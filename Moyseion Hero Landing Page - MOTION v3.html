@@ -169,7 +169,7 @@ html.no-motion .ln { opacity:1 !important; transform:none !important; }
    so there is nothing to pop or race the scrub */
 .rings-push { position:fixed; inset:0; pointer-events:none; z-index:10; will-change:transform; }
 .rings-wrap {
-  position:absolute; top:8vh; left:50%;
+  position:absolute; top:var(--m-sigil-top, 8vh); left:50%;
   width:20vw; min-width:150px; aspect-ratio:1/1;
   pointer-events:none;
 }
@@ -316,7 +316,7 @@ html.no-3d .logo-center { visibility:visible; }
   contain:layout paint style;
   width:100%;
   min-height:calc(var(--vh) * 100);
-  display:flex; align-items:center; justify-content:space-between; gap:8%;
+  display:flex; align-items:center; justify-content:space-between; gap:5%;
   padding:10vh 5%;
   /* TOP PADDING IS THE TITLE'S EXCLUSION ZONE. --wm-zone is the parked
      MOYΣEION's measured bottom edge in px, so this clears the mark by 3vh at
@@ -324,7 +324,7 @@ html.no-3d .logo-center { visibility:visible; }
   padding-top:max(10vh, calc(var(--wm-zone, 8vh) + 3vh));
 }
 .manifesto + .manifesto { margin-top:10vh; }
-.manifesto-inner { flex:0 1 57%; min-width:0; }
+.manifesto-inner { flex:0 1 56%; min-width:0; }
 /* min-width:0 is what keeps a resize honest: the paragraph is pre-split into
    nowrap rows, and a flex item's automatic minimum is its widest row, so rows
    built at the OLD width held the column wide, shoved the capsule off the right
@@ -337,10 +337,13 @@ html.no-3d .logo-center { visibility:visible; }
 
 .manifesto p {
   font-family:var(--font); font-weight:400;
-  font-size:clamp(1.5rem, 2.4vw, 2.5rem); line-height:1.5;
+  font-size:clamp(1.5rem, 2.9vw, 3.2rem); line-height:1.45;
   color:var(--gold-body);
 }
 .manifesto strong { color:var(--gold-bright); font-weight:700; }
+#manifesto-spirit p { font-size:clamp(1.3rem, min(2.4vw, 3.7vh), 2.8rem); }
+#manifesto-sanctuary p { font-size:clamp(1.4rem, min(2.8vw, 4.6vh), 3.1rem); }
+
 .manifesto a {
   color:var(--gold-bright); text-decoration:underline;
   text-decoration-thickness:0.0625em; text-underline-offset:0.18em;
@@ -399,7 +402,7 @@ html.no-3d .logo-center { visibility:visible; }
 }
 /* Background film: fills the section, tinted navy so the type stays legible. */
 .visit-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 50%; z-index:0; pointer-events:none; }
-@media (max-width:700px){ .visit-bg { object-position:76% 50%; } }   /* 16:9 film in a portrait box: keep the second figure and the candle in frame */
+@media (max-width: 520px){ .visit-bg { object-position:76% 50%; } }   /* 16:9 film in a portrait box: keep the second figure and the candle in frame */
 .visit::before { content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
   /* Top edge is solid page navy and eases out, so the film emerges from the previous section with no seam. */
   background:linear-gradient(to bottom,
@@ -455,7 +458,7 @@ html.no-3d .logo-center { visibility:visible; }
 /* ============ PER-SECTION IMAGE PANEL ============ */
 .section-imgs {
   position:relative; flex:0 0 auto;
-  width:25vw; aspect-ratio:110/167; height:auto;
+  width:min(34vw, calc(var(--vh) * 74 * 110 / 167)); aspect-ratio:110/167; height:auto;
   border-radius:50% / 20%; overflow:hidden;     /* EXACT capsule per the supplied SVG */
   outline:0.09vw solid rgba(241,220,164,0.55); outline-offset:-0.09vw;
   z-index:22;
@@ -532,7 +535,7 @@ html.no-3d .logo-center { visibility:visible; }
   background:linear-gradient(var(--gold-body),var(--gold-body)) 54% 50%/0.7rem 0.8rem no-repeat;
   clip-path:none;
 }
-@media (max-width: 700px) {
+@media (max-width: 520px) {
   /* phone: a swipeable strip, one and a bit frames wide, instead of three slivers */
   .reels { justify-content:flex-start; gap:0.9rem; padding:0 9%; margin:8vh 0;
     overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
@@ -586,9 +589,42 @@ html.no-3d .logo-center { visibility:visible; }
 .rail-card b { display:block; font-weight:400; font-size:clamp(1.15rem, 1.6vw, 1.55rem); color:var(--gold-bright); letter-spacing:0.04em; }
 .rail-card span { display:block; margin-top:0.4rem; font-size:0.95rem; line-height:1.55; color:var(--gold-body); }
 .rail-card i { font-style:normal; display:block; margin-top:0.9rem; font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-bright); }
+.rail-track.mosaic { --row:clamp(9rem, 32vh, 17rem); display:grid; grid-auto-flow:column dense; grid-template-rows:repeat(2, var(--row)); grid-auto-columns:var(--row); gap:clamp(0.6rem, 1.1vw, 1.1rem); align-items:stretch; }
+.rail-track .rail-card.tile { position:relative; display:block; flex:none; overflow:hidden; border-radius:14px; border:1px solid rgba(131,109,48,0.35); background:#0a1024; padding:0; transform:none; box-shadow:none; scroll-snap-align:start; }
+.rail-track .rail-card.tile.big  { grid-column:span 2; grid-row:span 2; }
+.rail-track .rail-card.tile.wide { grid-column:span 2; }
+.rail-track .rail-card.tile.tall { grid-row:span 2; }
+.rail-card.tile img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 1.4s cubic-bezier(.2,.7,.2,1), filter .6s; filter:saturate(.95) brightness(.88); }
+.rail-card.tile::after { content:''; position:absolute; inset:0; background:linear-gradient(0deg, rgba(1,4,22,.88) 0%, rgba(1,4,22,.35) 42%, rgba(1,4,22,0) 70%); transition:opacity .5s; }
+.rail-card.tile .tl { position:absolute; left:0; right:0; bottom:0; z-index:2; padding:clamp(0.8rem,1.3vw,1.3rem); }
+.rail-card.tile .tl b { font-size:clamp(1rem,1.35vw,1.4rem); }
+.rail-card.tile .tl span { font-size:clamp(0.78rem,0.9vw,0.92rem); line-height:1.45; margin-top:0.3rem; opacity:.9; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.rail-card.tile.big .tl b { font-size:clamp(1.3rem,2vw,2.1rem); }
+.rail-card.tile .tl i { margin-top:0.6rem; font-size:0.7rem; opacity:0; transform:translateY(6px); transition:opacity .4s, transform .4s; }
+.rail-track .rail-card.tile:hover { border-color:var(--gold-body); transform:none; box-shadow:0 0 2rem rgba(241,220,164,.1); }
+.rail-card.tile:hover img, .rail-card.tile:focus-visible img { transform:scale(1.07); filter:saturate(1.05) brightness(1); }
+.rail-card.tile:hover .tl i, .rail-card.tile:focus-visible .tl i { opacity:1; transform:none; }
+@media (hover:none) { .rail-card.tile .tl i { opacity:.85; transform:none; } }
+@media (max-width: 520px) { .rail-track.mosaic { --row:clamp(8.5rem, 21vh, 12rem); } .rail-card.tile .tl span { -webkit-line-clamp:1; } }
+/* organic shapes: every tile has its own soft silhouette (arch, capsule, leaf, pebble), nothing is a plain rectangle */
+.rail-track.mosaic { padding-top:1.4rem; padding-bottom:2.6rem; }
+.rail-track .rail-card.tile:nth-child(1) { border-radius:46% 54% 42% 58% / 38% 42% 58% 62%; }              /* big pebble */
+.rail-track .rail-card.tile:nth-child(2) { border-radius:50% 50% 12% 12% / 42% 42% 8% 8%; }                /* arch */
+.rail-track .rail-card.tile:nth-child(3) { border-radius:62% 38% 55% 45% / 50% 60% 40% 50%; }               /* blob */
+.rail-track .rail-card.tile:nth-child(4) { border-radius:50% / 34%; }                                      /* wide capsule */
+.rail-track .rail-card.tile:nth-child(5) { border-radius:50% 50% 50% 50% / 20% 20% 20% 20%; }              /* tall capsule, as the alcoves */
+.rail-track .rail-card.tile:nth-child(6) { border-radius:50%; }                                           /* round */
+.rail-track .rail-card.tile:nth-child(7) { border-radius:8% 58% 8% 58% / 8% 58% 8% 58%; }                  /* leaf */
+.rail-track .rail-card.tile:nth-child(8) { border-radius:58% 42% 50% 50% / 62% 38% 62% 38%; }              /* wide pebble */
+.rail-track .rail-card.tile:nth-child(9) { border-radius:44% 56% 30% 70% / 56% 44% 56% 44%; }
+.rail-track .rail-card.tile:nth-child(odd):not(.big)  { transform:translateY(-0.6rem); }
+.rail-track .rail-card.tile:nth-child(even):not(.big) { transform:translateY(0.6rem); }
+.rail-track .rail-card.tile:nth-child(n):hover { transform:translateY(-0.9rem); }
+.rail-card.tile .tl { padding:clamp(1.2rem,2.4vw,2.4rem); text-align:center; }
+.rail-card.tile.big .tl, .rail-card.tile.wide .tl { text-align:center; }
 .rail-bar { height:1px; background:rgba(131,109,48,0.35); margin:0 5%; position:relative; }
 .rail-bar::after { content:''; position:absolute; left:0; top:-1px; height:3px; width:var(--rail-w, 25%); transform:translateX(var(--rail-x, 0)); background:var(--gold-body); transition:transform .15s linear; }
-@media (max-width: 700px) {
+@media (max-width: 520px) {
   .rail-head { flex-direction:column; align-items:flex-start; gap:1.4rem; }
   .rail-card { flex-basis:72vw; }
   .rail-card .cap { box-shadow:0 2vw 5vw rgba(1,4,22,0.5); }
@@ -604,7 +640,7 @@ html.no-3d .logo-center { visibility:visible; }
   .rings-wrap { width:26vw; }
   .statue-wrap { width:4.5vw; }
 }
-@media (max-width: 700px) {
+@media (max-width: 520px) {
   .manifesto,
   .manifesto.side-left, .manifesto.side-right {
     flex-direction:column; justify-content:center; gap:5vh;
@@ -875,11 +911,16 @@ html.no-3d .logo-center { visibility:visible; }
     <div><p class="eyebrow" data-i18n="rail.eye">Keep going</p><h2 data-i18n="rail.h">Explore MOY&Sigma;EION</h2></div>
     <div class="rail-nav"><button type="button" id="railPrev" aria-label="Previous">&larr;</button><button type="button" id="railNext" aria-label="Next">&rarr;</button></div>
   </div>
-  <div class="rail-track" id="railTrack">
-    <a class="rail-card" href="proposal/moyseion-explore.html"><div class="cap"><img data-img="andron" alt="" draggable="false"></div><div><b data-i18n="rail.1.t">Explore Moyseion</b><span data-i18n="rail.1.d">The idea, the research, the cultural life.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
-    <a class="rail-card" href="proposal/moyseion-explore.html#research"><div class="cap"><img data-img="neolithic1" alt="" draggable="false"></div><div><b data-i18n="rail.2.t">Research</b><span data-i18n="rail.2.d">Excavations, studies and discoveries in Matera and beyond.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
-    <a class="rail-card" href="proposal/moyseion-explore.html#journal"><div class="cap"><img data-img="musica1" alt="" draggable="false"></div><div><b data-i18n="rail.3.t">Journal</b><span data-i18n="rail.3.d">Archaeologia Poetica: reflections, essays and notes from inside Moyseion.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
-    <a class="rail-card" href="proposal/moyseion-day.html"><div class="cap"><img data-img="xenia1" alt="" draggable="false"></div><div><b data-i18n="rail.4.t">A day at Moyseion</b><span data-i18n="rail.4.d">Five rituals, from arrival to return.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+  <div class="rail-track mosaic" id="railTrack">
+    <a class="rail-card tile big" href="proposal/moyseion-explore.html"><img data-img="andron" alt="" draggable="false"><div class="tl"><b data-i18n="rail.1.t">Explore Moyseion</b><span data-i18n="rail.1.d">The idea, the research, the cultural life.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-explore.html#research"><img data-img="neolithic1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.2.t">Research</b><span data-i18n="rail.2.d">Excavations, studies and discoveries in Matera and beyond.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-explore.html#journal"><img data-img="musica1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.3.t">Journal</b><span data-i18n="rail.3.d">Archaeologia Poetica: reflections, essays and notes.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile wide" href="proposal/moyseion-day.html"><img data-img="xenia1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.4.t">A day at Moyseion</b><span data-i18n="rail.4.d">Five rituals, from arrival to return.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile tall" href="proposal/moyseion-inhabit.html#houses"><img data-img="neolithic2" alt="" draggable="false"><div class="tl"><b data-i18n="rail.5.t">The Houses</b><span data-i18n="rail.5.d">Not a room, but a home.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-inhabit.html#water"><img data-img="enotrian1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.6.t">Water Sanctuary</b><span data-i18n="rail.6.d">Silence, purification, listening.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-inhabit.html#akratisma"><img data-img="cheese" alt="" draggable="false"><div class="tl"><b data-i18n="rail.7.t">Akratisma</b><span data-i18n="rail.7.d">Breakfast as archaeological research.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile wide" href="proposal/moyseion-plan.html"><img data-img="danza1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.8.t">Plan your stay</b><span data-i18n="rail.8.d">Getting here, parking, comfort.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-press.html"><img data-img="greekmedia" alt="" draggable="false"><div class="tl"><b data-i18n="rail.9.t">Press</b><span data-i18n="rail.9.d">Selected coverage and the press kit.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
   </div>
   <div class="rail-bar" id="railBar" aria-hidden="true"></div>
 </section>
@@ -910,7 +951,7 @@ html.no-3d .logo-center { visibility:visible; }
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function(es){
       es.forEach(function(e){ if (e.isIntersecting) go(e.target); else e.target.pause(); });
-    }, { threshold: window.innerWidth <= 700 ? 0.6 : 0.2 });
+    }, { threshold: window.innerWidth <= 520 ? 0.6 : 0.2 });
     vids.forEach(function(v){ io.observe(v); });
   }
   // the hero film is a fixed layer, so the observer cannot tell when it has been scrolled away: stop it by position
@@ -924,7 +965,7 @@ html.no-3d .logo-center { visibility:visible; }
   // each side; whenever the strip settles on a copy it jumps by exactly one set, which looks
   // identical, so the reader can keep swiping either way and always meets all three clips.
   var strip = document.querySelector('.reels');
-  var mq = window.matchMedia('(max-width:700px)');
+  var mq = window.matchMedia('(max-width: 520px)');
   if (strip) (function(){
     var originals = Array.prototype.slice.call(strip.querySelectorAll('.reel'));
     var clones = [], settleT = null;
@@ -1121,7 +1162,7 @@ root.classList.remove('no-motion');
 // Both are SECOND filters: Lenis already smooths the scroll signal upstream.
 // Phones get a shorter trail: the finger is directly on the page, so a long smoothing tail reads as
 // the page lagging behind it, and every frame of tail is another frame of JS on a weaker CPU.
-const PHONE_AT_LOAD = window.innerWidth <= 700;
+const PHONE_AT_LOAD = window.innerWidth <= 520;
 const SCRUB_SYSTEM  = PHONE_AT_LOAD ? 0.2  : 0.35;
 const SCRUB_CONTENT = PHONE_AT_LOAD ? 0.06 : 0.12;
 // Perceived lightness goes roughly as alpha^(1/2.2), so a LINEAR alpha ramp is
@@ -1184,7 +1225,7 @@ function fitWordmark(){
 
 // Parked mark: desktop keeps the small corner tag. On a phone it is larger, sits at the
 // page margin, and is centred on the Menu button's row so the two read as one header line.
-const isPhone = () => VW <= 700;
+const isPhone = () => VW <= 520;
 const wmEndScale = () => (isPhone() ? 0.34 : WM_END_W) / WM_FIT;
 const WM_LEFT_VW = () => (isPhone() ? 5 : 1.5);
 function wmTop(){
@@ -1193,12 +1234,13 @@ function wmTop(){
   return Math.max(0, 22 - h / 2) / VH;
 }
 const wordmarkEl = document.getElementById('wordmark');
-// Phone hero: the sigil and the title are one group, centred on the page both ways.
+// Hero (every size): the sigil and the title are one group, centred on the page both ways.
 // Returns the title's starting y (its box is parked at the bottom edge, so this lifts it).
 function phoneHero(){
-  if (!isPhone()) return { sigilTop: null, titleY: 0 };
-  const sigilW = Math.max(VW * 0.56, 130);
-  const titleH = (wordmarkEl.offsetHeight || VH * 0.1) * 0.86;
+  // the sigil's real start width comes from the CSS breakpoints (20vw / 26vw / 56vw, each with a minimum), so measure it
+  const rw = document.getElementById('rings');
+  const sigilW = (rw && rw.offsetWidth) || (isPhone() ? Math.max(VW * 0.56, 130) : Math.max(VW * 0.20, 150));
+  const titleH = (wordmarkEl.offsetHeight || VH * 0.1);
   const gap = Math.max(14, VH * 0.035);
   const top = Math.max(VH * 0.08, (VH - (sigilW + gap + titleH)) / 2);
   return { sigilTop: top, titleY: -(VH - (top + sigilW + gap + titleH)) };
@@ -1315,7 +1357,7 @@ function ringsEndTop(){
   // GSAP writes width:44vw inline, but CSS min-width still clamps the USED
   // width — on a narrow viewport the sigil is wider than 44vw and a 44vw-based
   // half-height under-reads its bottom edge, eating the gap.
-  const minW = VW <= 700 ? 130 : 150;
+  const minW = VW <= 520 ? 130 : 150;
   const halfH = Math.max(VW * 0.44, minW) / 2;
   return VH * (1 - SIGIL_GAP) - halfH;
 }
@@ -2587,6 +2629,11 @@ const LOCALES = {
     'rail.2.t': 'La ricerca', 'rail.2.d': 'Scavi, studi e scoperte nei Sassi di Matera e oltre.',
     'rail.3.t': 'Journal', 'rail.3.d': 'Archaeologia Poetica: riflessioni, saggi e appunti dall’interno del Moyseion.',
     'rail.4.t': 'Un giorno al Moyseion', 'rail.4.d': 'Cinque rituali, dall’arrivo al ritorno.',
+    'rail.5.t': 'Le case', 'rail.5.d': 'Non una camera, ma una casa.',
+    'rail.6.t': 'Santuario delle Acque', 'rail.6.d': 'Silenzio, purificazione, ascolto.',
+    'rail.7.t': 'Akratisma', 'rail.7.d': 'La colazione come ricerca archeologica.',
+    'rail.8.t': 'Pianifica il soggiorno', 'rail.8.d': 'Arrivare, parcheggiare, stare comodi.',
+    'rail.9.t': 'Stampa', 'rail.9.d': 'Rassegna stampa e press kit.',
     'rail.go': 'Scopri &rarr;'
   }
 };
@@ -2660,7 +2707,7 @@ window.addEventListener('resize', () => {
 const particleCanvas = document.getElementById('particles');
 const pCtx = particleCanvas.getContext('2d');
 let particles = [];
-const PARTICLE_COUNT = window.innerWidth <= 700 ? 52 : 120;   // phones: half the motes, same look
+const PARTICLE_COUNT = window.innerWidth <= 520 ? 52 : 120;   // phones: half the motes, same look
 // Three tints: warm gold, pale champagne gold, soft white. Each is baked once
 // into a radial-gradient sprite (hot core + feathered halo) so every mote is
 // perfectly round and soft-edged at any size, and drawing stays a cheap drawImage.
@@ -2680,7 +2727,7 @@ const PARTICLE_SPRITES = PARTICLE_TINTS.map(([r,g,b]) => {
 });
 let particleIntensity = 1, lastParticleSy = 0;
 function sizeParticleCanvas(){
-  const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 700 ? 1.5 : 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 520 ? 1.5 : 2);
   particleCanvas.width  = Math.round(VW * dpr);
   particleCanvas.height = Math.round(VH * dpr);
   pCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -2807,7 +2854,7 @@ key.position.set(2, 3, 4);
 rim.position.set(-3, -2, 1.5);
 scene.add(key, rim, fill);
 
-const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 700 ? 1.5 : 2);
+const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 520 ? 1.5 : 2);
 let statueDirty = true, lastPoseKey = '';
 function sizeRenderer(){
   statueDirty = true;
