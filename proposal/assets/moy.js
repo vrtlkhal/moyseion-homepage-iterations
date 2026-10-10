@@ -3,6 +3,7 @@
 (function(){
   var root = document.documentElement;
   root.classList.add('js');
+  var LIGHTMODE = document.documentElement.getAttribute('data-theme') === 'light';
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var PHONE = function(){ return window.innerWidth <= 700; };
 
@@ -51,6 +52,10 @@
     }
     wrap.querySelectorAll('.lang-opt').forEach(function(b){ b.addEventListener('click', function(){ swap(b.dataset.lang); }); });
     try { var saved = localStorage.getItem('moy-lang'); if (saved === 'it') swap('it'); } catch (e) {}
+
+    // light / dark
+    var thm = wrap.querySelector('.thm'), isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (thm){ thm.textContent = isLight ? 'Dark' : 'Light'; thm.addEventListener('click', function(){ window.__moySetTheme(isLight ? 'dark' : 'light'); }); }
 
     // ambient sound: synthesised room tone, off by default, started by the click itself
     var snd = wrap.querySelector('.snd'), audio = null;
@@ -215,7 +220,7 @@
       });
       if (!words.length) return;
       var long = words.length > 14;
-      gsap.fromTo(words, { color:'#836d30' }, { color:'#f1dca4', ease:'none', stagger: long ? .5 : .25,
+      gsap.fromTo(words, { color: LIGHTMODE ? '#a08c70' : '#836d30' }, { color: LIGHTMODE ? '#1b1713' : '#f1dca4', ease:'none', stagger: long ? .5 : .25,
         scrollTrigger:{ trigger:el, start:'top 92%', end: long ? 'bottom 46%' : 'top 56%', scrub:.3 } });
     });
   }

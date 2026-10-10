@@ -22,6 +22,9 @@
   .versions button:hover { color:var(--gold-bright); }
   .versions button[aria-pressed="true"] { background:var(--gold-body); color:var(--navy); }
   .tools { display:flex; gap:.6rem; justify-content:flex-end; flex-wrap:wrap; }
+.seg{display:inline-flex;border:1px solid var(--gold-body);border-radius:2rem;overflow:hidden}
+  .seg button{font:inherit;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-body);background:rgba(1,4,22,.9);border:0;padding:.5rem 1rem;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--gold-body);color:var(--navy)}
   .pill { display:inline-flex; align-items:center; gap:.6rem; font:inherit; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-bright); background:rgba(1,4,22,.9); border:1px solid var(--gold-body); padding:.5rem 1rem; border-radius:2rem; cursor:pointer; }
   .pill:hover { border-color:var(--gold-bright); }
   .pill::before { content:''; width:.5rem; height:.5rem; border-radius:50%; background:var(--gold-bright); box-shadow:0 0 .6rem rgba(241,220,164,.7); }
@@ -61,6 +64,7 @@
     <button type="button" id="v3" aria-pressed="false"><b>Version 3</b><small>Draft &ndash; synthesis</small></button>
   </div>
   <div class="tools">
+    <div class="seg" role="group" aria-label="Theme"><button type="button" id="thD" aria-pressed="true">Dark</button><button type="button" id="thL" aria-pressed="false">Light</button></div>
     <button class="pill" id="link" type="button" aria-pressed="true" title="Link or unlink the laptop and phone scrolls">Parallel scroll: on</button>
   </div>
 </header>
@@ -181,6 +185,20 @@
   document.addEventListener('fullscreenchange', function(){
     [1, 2, 3].forEach(function(n){ stage[n].lap.contentWindow.postMessage({ type:'moy-full', on: document.fullscreenElement === stage[n].lap }, '*'); });
   });
+
+  // ---- light / dark: every window follows
+  var theme = 'dark';
+  function setTheme(t){
+    theme = t;
+    document.getElementById('thD').setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+    document.getElementById('thL').setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
+    [1, 2, 3].forEach(function(n){ [stage[n].lap, stage[n].mob].forEach(function(f){ try { f.contentWindow.postMessage({ type:'moy-theme', theme:t }, '*'); } catch(e){} }); });
+    try { sessionStorage.setItem('moy-mirror-theme', t); } catch(e){}
+  }
+  document.getElementById('thD').addEventListener('click', function(){ setTheme('dark'); });
+  document.getElementById('thL').addEventListener('click', function(){ setTheme('light'); });
+  // a page that loads (or is switched to) after the choice learns it from the first scroll report
+  window.addEventListener('message', function(e){ if (e.data && e.data.type === 'moy-anchors' && theme === 'light' && e.source) { try { e.source.postMessage({ type:'moy-theme', theme:theme }, '*'); } catch(x){} } });
 
   // ---- real CSS width of each window
   function sizes(){

@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){try{var q=/[?&]theme=(light|dark)/.exec(location.search);if(q)localStorage.setItem("moy-theme",q[1]);if(localStorage.getItem("moy-theme")==="light")document.documentElement.setAttribute("data-theme","light");}catch(e){}
+window.__moySetTheme=function(t){try{localStorage.setItem("moy-theme",t)}catch(e){}location.reload();};
+window.addEventListener("message",function(e){var d=e.data;if(d&&d.type==="moy-theme"&&d.theme!==(document.documentElement.getAttribute("data-theme")==="light"?"light":"dark"))window.__moySetTheme(d.theme);});})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MOY&Sigma;EION &middot; Magna Graecia in Matera</title>
 
@@ -606,22 +609,17 @@ html.no-3d .logo-center { visibility:visible; }
 .rail-card.tile:hover .tl i, .rail-card.tile:focus-visible .tl i { opacity:1; transform:none; }
 @media (hover:none) { .rail-card.tile .tl i { opacity:.85; transform:none; } }
 @media (max-width: 520px) { .rail-track.mosaic { --row:clamp(8.5rem, 21vh, 12rem); } .rail-card.tile .tl span { -webkit-line-clamp:1; } }
-/* organic shapes: every tile has its own soft silhouette (arch, capsule, leaf, pebble), nothing is a plain rectangle */
-.rail-track.mosaic { padding-top:1.4rem; padding-bottom:2.6rem; }
-.rail-track .rail-card.tile:nth-child(1) { border-radius:46% 54% 42% 58% / 38% 42% 58% 62%; }              /* big pebble */
-.rail-track .rail-card.tile:nth-child(2) { border-radius:50% 50% 12% 12% / 42% 42% 8% 8%; }                /* arch */
-.rail-track .rail-card.tile:nth-child(3) { border-radius:62% 38% 55% 45% / 50% 60% 40% 50%; }               /* blob */
-.rail-track .rail-card.tile:nth-child(4) { border-radius:50% / 34%; }                                      /* wide capsule */
-.rail-track .rail-card.tile:nth-child(5) { border-radius:50% 50% 50% 50% / 20% 20% 20% 20%; }              /* tall capsule, as the alcoves */
-.rail-track .rail-card.tile:nth-child(6) { border-radius:50%; }                                           /* round */
-.rail-track .rail-card.tile:nth-child(7) { border-radius:8% 58% 8% 58% / 8% 58% 8% 58%; }                  /* leaf */
-.rail-track .rail-card.tile:nth-child(8) { border-radius:58% 42% 50% 50% / 62% 38% 62% 38%; }              /* wide pebble */
-.rail-track .rail-card.tile:nth-child(9) { border-radius:44% 56% 30% 70% / 56% 44% 56% 44%; }
-.rail-track .rail-card.tile:nth-child(odd):not(.big)  { transform:translateY(-0.6rem); }
-.rail-track .rail-card.tile:nth-child(even):not(.big) { transform:translateY(0.6rem); }
-.rail-track .rail-card.tile:nth-child(n):hover { transform:translateY(-0.9rem); }
-.rail-card.tile .tl { padding:clamp(1.2rem,2.4vw,2.4rem); text-align:center; }
-.rail-card.tile.big .tl, .rail-card.tile.wide .tl { text-align:center; }
+/* organic and symmetrical: two stacked tiles | one large tile | two stacked tiles, mirrored; one even gap, nothing offset or overlapping */
+.rail-track.mosaic { --row:clamp(9rem, 30vh, 16rem); padding-top:0.5rem; padding-bottom:1.6rem; gap:clamp(0.7rem,1.2vw,1.2rem); grid-auto-flow:column; }
+.rail-track .rail-card.tile { transform:none!important; }
+.rail-track .rail-card.tile.big { border-radius:34%; }
+.rail-track .rail-card.tile:nth-child(1), .rail-track .rail-card.tile:nth-child(6) { border-radius:50% 10% 10% 10%; }   /* left column, top */
+.rail-track .rail-card.tile:nth-child(2), .rail-track .rail-card.tile:nth-child(7) { border-radius:10% 10% 10% 50%; }   /* left column, bottom */
+.rail-track .rail-card.tile:nth-child(4), .rail-track .rail-card.tile:nth-child(9) { border-radius:10% 50% 10% 10%; }   /* right column, top */
+.rail-track .rail-card.tile:nth-child(5), .rail-track .rail-card.tile:nth-child(10) { border-radius:10% 10% 50% 10%; } /* right column, bottom */
+.rail-track .rail-card.tile:nth-child(n):hover { transform:none!important; border-color:var(--gold-bright); }
+.rail-card.tile .tl { padding:clamp(1rem,1.6vw,1.6rem) clamp(0.9rem,1.4vw,1.4rem) clamp(1.1rem,1.8vw,1.8rem); text-align:center; }
+.rail-card.tile .tl span { -webkit-line-clamp:2; }
 .rail-bar { height:1px; background:rgba(131,109,48,0.35); margin:0 5%; position:relative; }
 .rail-bar::after { content:''; position:absolute; left:0; top:-1px; height:3px; width:var(--rail-w, 25%); transform:translateX(var(--rail-x, 0)); background:var(--gold-body); transition:transform .15s linear; }
 @media (max-width: 520px) {
@@ -634,6 +632,53 @@ html.no-3d .logo-center { visibility:visible; }
 .foot-note { flex:1 0 100%; text-align:center; margin-top:0.4rem; padding-top:1.1rem; border-top:1px solid rgba(131,109,48,0.28); font-size:0.82rem; letter-spacing:0.08em; color:var(--gold-body); }
 .foot-note a { color:var(--gold-bright); text-decoration:underline; text-decoration-thickness:0.0625em; text-underline-offset:0.2em; }
 .foot-note a:hover { color:#fff; }
+
+
+/* =====================================================================================================
+   LIGHT THEME (dark is the default). Warm parchment, ink-black type, copper and brown accents.
+   ===================================================================================================== */
+html[data-theme="light"]{ --navy:#f4efe8; --gold-deep:#8b5a2b; --gold-body:#3a3128; --gold-bright:#1b1713; color-scheme:light; }
+html[data-theme="light"] body{background:#f4efe8}
+html[data-theme="light"] .navy-base{background:#f4efe8}
+html[data-theme="light"] .vignette,html[data-theme="light"] .particles{display:none}
+html[data-theme="light"] .grain{opacity:.03}
+html[data-theme="light"] .rings-navy{color:#f1dca4}
+html[data-theme="light"] .rings-shimmer{color:#c28a45}
+html[data-theme="light"] .wordmark h1{color:#fff;text-shadow:0 0.3vw 1.6vw rgba(40,25,10,.35);transition:color .4s}
+html[data-theme="light"].wm-ink .wordmark h1{color:#1b1713;text-shadow:none}
+html[data-theme="light"] .menu-btn,html[data-theme="light"] .chrome button,html[data-theme="light"] .chrome a{color:#2a231b}
+html[data-theme="light"] .menu-panel{background:rgba(247,243,236,.97);border-color:rgba(139,90,43,.4)}
+html[data-theme="light"] .menu-roadmap a{color:#2a231b}
+html[data-theme="light"] .menu-roadmap a:hover,html[data-theme="light"] .lang-opt[aria-pressed="true"]{color:#8b5a2b}
+html[data-theme="light"] .manifesto strong,html[data-theme="light"] .manifesto a{color:#1b1713}
+html[data-theme="light"] .manifesto p{color:#2a231b}
+html[data-theme="light"] .section-imgs{outline-color:rgba(139,90,43,.7);box-shadow:0 1vw 2.4vw rgba(70,45,20,.22)}
+html[data-theme="light"] .more-link{color:#6b3f17;border-bottom-color:#8b5a2b}
+html[data-theme="light"] .more-link:hover{color:#7a1a1a;border-color:#7a1a1a}
+html[data-theme="light"] .rail-head h2,html[data-theme="light"] .rail-head .eyebrow{color:#1b1713}
+html[data-theme="light"] .rail-head .eyebrow{color:#8b5a2b}
+html[data-theme="light"] .rail-nav button{background:#f7f3ec;color:#2a231b;border-color:#8b5a2b}
+html[data-theme="light"] .rail-card.tile{border-color:rgba(139,90,43,.4);background:#e9dfcf}
+html[data-theme="light"] .rail-card.tile .tl b,html[data-theme="light"] .rail-card.tile .tl span,html[data-theme="light"] .rail-card.tile .tl i{color:#fbf6ee}
+html[data-theme="light"] .rail-bar{background:rgba(139,90,43,.3)}
+html[data-theme="light"] .rail-bar::after{background:#8b5a2b}
+html[data-theme="light"] .visit::before{background:linear-gradient(to bottom,#f4efe8 0%,rgba(244,239,232,.92) 8%,rgba(244,239,232,.7) 35%,rgba(244,239,232,.6) 60%,rgba(244,239,232,.86) 100%)}
+html[data-theme="light"] .coda-mark{color:#8b5a2b}
+html[data-theme="light"] .coda-word{color:#1b1713!important;text-shadow:none;opacity:1}
+html[data-theme="light"] .foot-note,html[data-theme="light"] .foot-note a{color:#3a3128}
+html[data-theme="light"] .foot-note a{color:#7a1a1a}
+html[data-theme="light"] .visit-actions a{color:#6b3f17;border-color:#8b5a2b;background:transparent}
+html[data-theme="light"] .visit-actions a.primary{background:#7a1a1a;border-color:#7a1a1a;color:#fff}
+html[data-theme="light"] .visit-actions a:hover{background:rgba(139,90,43,.1)}
+html[data-theme="light"] .visit-actions a.primary:hover{background:#5f1111}
+html[data-theme="light"] .site-foot,html[data-theme="light"] .site-foot a{color:#3a3128}
+html[data-theme="light"] .site-foot a:hover{color:#8b5a2b}
+html[data-theme="light"] .progress-bar .bar-dot,html[data-theme="light"] .bar-fill{background:#8b5a2b}
+html[data-theme="light"] .reel-frame{border-color:#8b5a2b;background:#f1ebe1}
+html[data-theme="light"] .reel-title{color:#2a231b}
+html[data-theme="light"] .water-band{border-color:rgba(139,90,43,.3)}
+.menu-panel .thm{font-family:var(--font);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-body);background:none;border:0;cursor:pointer;padding:.4rem .2rem}
+.menu-panel .thm:hover{color:var(--gold-bright)}
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1024px) {
@@ -799,6 +844,7 @@ html.no-3d .logo-center { visibility:visible; }
     <button type="button" id="soundToggle" aria-pressed="false" title="Ambient sound">
       <span data-i18n="nav.sound">Sound</span>
     </button>
+    <button type="button" class="thm" id="themeBtn">Light</button>
   </div>
 </nav>
 
@@ -908,19 +954,20 @@ html.no-3d .logo-center { visibility:visible; }
 <!-- EXPLORE RAIL: horizontal navigation, just before the closing section -->
 <section class="rail" id="rail" aria-label="Explore MOY&Sigma;EION">
   <div class="rail-head">
-    <div><p class="eyebrow" data-i18n="rail.eye">Keep going</p><h2 data-i18n="rail.h">Explore MOY&Sigma;EION</h2></div>
+    <div><p class="eyebrow" data-i18n="rail.eye">Continue</p><h2 data-i18n="rail.h">Explore MOY&Sigma;EION</h2></div>
     <div class="rail-nav"><button type="button" id="railPrev" aria-label="Previous">&larr;</button><button type="button" id="railNext" aria-label="Next">&rarr;</button></div>
   </div>
   <div class="rail-track mosaic" id="railTrack">
-    <a class="rail-card tile big" href="proposal/moyseion-explore.html"><img data-img="andron" alt="" draggable="false"><div class="tl"><b data-i18n="rail.1.t">Explore Moyseion</b><span data-i18n="rail.1.d">The idea, the research, the cultural life.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
     <a class="rail-card tile " href="proposal/moyseion-explore.html#research"><img data-img="neolithic1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.2.t">Research</b><span data-i18n="rail.2.d">Excavations, studies and discoveries in Matera and beyond.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
     <a class="rail-card tile " href="proposal/moyseion-explore.html#journal"><img data-img="musica1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.3.t">Journal</b><span data-i18n="rail.3.d">Archaeologia Poetica: reflections, essays and notes.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
-    <a class="rail-card tile wide" href="proposal/moyseion-day.html"><img data-img="xenia1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.4.t">A day at Moyseion</b><span data-i18n="rail.4.d">Five rituals, from arrival to return.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
-    <a class="rail-card tile tall" href="proposal/moyseion-inhabit.html#houses"><img data-img="neolithic2" alt="" draggable="false"><div class="tl"><b data-i18n="rail.5.t">The Houses</b><span data-i18n="rail.5.d">Not a room, but a home.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile big" href="proposal/moyseion-explore.html"><img data-img="andron" alt="" draggable="false"><div class="tl"><b data-i18n="rail.1.t">Explore Moyseion</b><span data-i18n="rail.1.d">The idea, the research, the cultural life.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-inhabit.html#houses"><img data-img="neolithic2" alt="" draggable="false"><div class="tl"><b data-i18n="rail.5.t">The Houses</b><span data-i18n="rail.5.d">Not a room, but a home.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
     <a class="rail-card tile " href="proposal/moyseion-inhabit.html#water"><img data-img="enotrian1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.6.t">Water Sanctuary</b><span data-i18n="rail.6.d">Silence, purification, listening.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
-    <a class="rail-card tile " href="proposal/moyseion-inhabit.html#akratisma"><img data-img="cheese" alt="" draggable="false"><div class="tl"><b data-i18n="rail.7.t">Akratisma</b><span data-i18n="rail.7.d">Breakfast as archaeological research.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
-    <a class="rail-card tile wide" href="proposal/moyseion-plan.html"><img data-img="danza1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.8.t">Plan your stay</b><span data-i18n="rail.8.d">Getting here, parking, comfort.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-inhabit.html#akratisma"><img data-img="cheese" alt="" draggable="false"><div class="tl"><b data-i18n="rail.7.t">Akratisma</b><span data-i18n="rail.7.d">The first meal, as archaeological research.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
     <a class="rail-card tile " href="proposal/moyseion-press.html"><img data-img="greekmedia" alt="" draggable="false"><div class="tl"><b data-i18n="rail.9.t">Press</b><span data-i18n="rail.9.d">Selected coverage and the press kit.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile big" href="proposal/moyseion-day.html"><img data-img="xenia1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.4.t">A day at Moyseion</b><span data-i18n="rail.4.d">Five rituals, from arrival to return.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="proposal/moyseion-plan.html"><img data-img="danza1" alt="" draggable="false"><div class="tl"><b data-i18n="rail.8.t">Plan your stay</b><span data-i18n="rail.8.d">Getting here, parking, comfort.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
+    <a class="rail-card tile " href="https://fondazione-moyseion-isama.com" target="_blank" rel="noopener"><img data-img="enotrian2" alt="" draggable="false"><div class="tl"><b data-i18n="rail.10.t">The Foundation</b><span data-i18n="rail.10.d">Research and archaeology, online.</span><i data-i18n="rail.go">Discover &rarr;</i></div></a>
   </div>
   <div class="rail-bar" id="railBar" aria-hidden="true"></div>
 </section>
@@ -1071,7 +1118,7 @@ html.no-3d .logo-center { visibility:visible; }
   // the rail's own text is lit by reading too
   if (window.gsap && window.ScrollTrigger){
     gsap.utils.toArray('.rail-head .eyebrow, .rail-head h2, .rail-card b, .rail-card span').forEach(function(el){
-      gsap.fromTo(el, { color:'#836d30' }, { color:'#f1dca4', ease:'none', scrollTrigger:{ trigger:el, start:'top 94%', end:'top 58%', scrub:0.3 } });
+      gsap.fromTo(el, { color: LIGHT ? '#a08c70' : '#836d30' }, { color: LIGHT ? '#1b1713' : '#f1dca4', ease:'none', scrollTrigger:{ trigger:el, start:'top 94%', end:'top 58%', scrub:0.3 } });
     });
   }
 
@@ -1152,6 +1199,8 @@ if (!window.gsap || !window.ScrollTrigger) {
 gsap.registerPlugin(ScrollTrigger);
 
 const REDUCED = root.classList.contains('reduced');
+const LIGHT = root.getAttribute('data-theme') === 'light';
+{ const tb = document.getElementById('themeBtn'); if (tb){ tb.textContent = LIGHT ? 'Dark' : 'Light'; tb.addEventListener('click', () => window.__moySetTheme(LIGHT ? 'dark' : 'light')); } }
 root.classList.remove('no-motion');
 
 // ================= MOTION CONSTANTS — TWO, NOT FIVE =================
@@ -1668,7 +1717,8 @@ const splitIntoLines = (p) => layoutParagraph(p, null);
 // ================= LINE REVEAL =================
 // Reading lights the text: each line is carried from deep gold (--gold-deep) to bright gold (--gold-bright)
 // as it crosses the reading band, and stays lit.
-const LIT_FROM = '#836d30', LIT_TO = '#f1dca4';
+const LIT_FROM = LIGHT ? '#a08c70' : '#836d30', LIT_TO = LIGHT ? '#1b1713' : '#f1dca4';
+const LIT_A = LIGHT ? [160,140,112] : [131,109,48], LIT_B = LIGHT ? [27,23,19] : [241,220,164];
 function buildLineReveals(){
   ScrollTrigger.getAll().forEach(st => { if (st.vars.id && String(st.vars.id).startsWith('ln-')) st.kill(); });
 
@@ -1703,7 +1753,7 @@ function buildLineReveals(){
             if (u === last[i]) continue;
             last[i] = u;
             lines[i].style.opacity = (0.1 + 0.9 * u).toFixed(3);
-            lines[i].style.color = 'rgb(' + Math.round(131 + 110 * u) + ',' + Math.round(109 + 111 * u) + ',' + Math.round(48 + 116 * u) + ')';
+            lines[i].style.color = 'rgb(' + Math.round(LIT_A[0] + (LIT_B[0] - LIT_A[0]) * u) + ',' + Math.round(LIT_A[1] + (LIT_B[1] - LIT_A[1]) * u) + ',' + Math.round(LIT_A[2] + (LIT_B[2] - LIT_A[2]) * u) + ')';
             lines[i].style.transform = 'translate3d(0,' + ((1 - u) * lift).toFixed(2) + 'px,0)';
           }
         }
@@ -2208,6 +2258,7 @@ function chromeFrame(sy){
   // The closing sigil carries the name; retire the parked corner wordmark once that section arrives.
   const hideWm = visitEl.getBoundingClientRect().top < VH * 0.4;
   if (hideWm !== wmHidden){ wmHidden = hideWm; wordmarkEl.classList.toggle('is-hidden', hideWm); }
+  root.classList.toggle('wm-ink', sy > holdEnd() * 0.9);   // light theme: the parked title turns ink on the parchment
   const show = sy > VH * 0.9;
   if (show !== chromeShown){
     chromeShown = show;
@@ -2631,9 +2682,10 @@ const LOCALES = {
     'rail.4.t': 'Un giorno al Moyseion', 'rail.4.d': 'Cinque rituali, dall’arrivo al ritorno.',
     'rail.5.t': 'Le case', 'rail.5.d': 'Non una camera, ma una casa.',
     'rail.6.t': 'Santuario delle Acque', 'rail.6.d': 'Silenzio, purificazione, ascolto.',
-    'rail.7.t': 'Akratisma', 'rail.7.d': 'La colazione come ricerca archeologica.',
+    'rail.7.t': 'Akratisma', 'rail.7.d': 'Il primo pasto, come ricerca archeologica.',
     'rail.8.t': 'Pianifica il soggiorno', 'rail.8.d': 'Arrivare, parcheggiare, stare comodi.',
     'rail.9.t': 'Stampa', 'rail.9.d': 'Rassegna stampa e press kit.',
+    'rail.10.t': 'La Fondazione', 'rail.10.d': 'Ricerca e archeologia, online.',
     'rail.go': 'Scopri &rarr;'
   }
 };
@@ -2814,6 +2866,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 const root = document.documentElement;
+const LIGHTSTATUE = root.getAttribute('data-theme') === 'light';
 const wrap   = document.getElementById('statueWrap');
 const canvas = document.getElementById('statueCanvas');
 
@@ -2901,7 +2954,7 @@ glbBytes
       if (o.isMesh) o.material = new THREE.MeshStandardMaterial({
         // the clear gold of the sigil's own strokes (--gold-bright), lifted by a little self-light so it
         // never sinks to bronze against the dark film; low metalness keeps it from darkening
-        color: 0xf1dca4, emissive: 0xf1dca4, emissiveIntensity: 0.32, metalness: 0.12, roughness: 0.38,
+        color: LIGHTSTATUE ? 0x8b5a2b : 0xf1dca4, emissive: LIGHTSTATUE ? 0x4a2c10 : 0xf1dca4, emissiveIntensity: LIGHTSTATUE ? 0.12 : 0.32, metalness: 0.12, roughness: 0.38,
         // The model is an extruded relief, 0.16 units deep against 4.85 tall.
         // At a glancing angle you can see through to the inside of the far wall
         // if the back faces are dropped, so both sides are drawn.
