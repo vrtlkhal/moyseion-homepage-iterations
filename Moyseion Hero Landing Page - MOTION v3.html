@@ -1256,7 +1256,7 @@ ScrollTrigger.config({
 // prepare + measure ONCE after the webfont is ready; every resize is pure math.
 const h1 = document.getElementById('wordmarkText');
 const REF_SIZE = 100;
-const WM_FIT = 0.784, WM_END_W = 0.14;
+const WM_FIT = 0.784, WM_END_W = 0.14, WM_SHRINK = 0.85;   // title is 15% smaller than the full fit; it still docks at the same size
 let wmNaturalWidth = null;
 
 function prepareWordmark(){
@@ -1268,14 +1268,14 @@ function fitWordmark(){
   if (wmNaturalWidth === null) return;
   let fontSize = REF_SIZE * (VW * WM_FIT / wmNaturalWidth);
   fontSize = Math.min(fontSize, VH * 0.42 * WM_FIT / 0.98);   // height guard
-  fontSize = Math.max(fontSize, 28);
+  fontSize = Math.max(fontSize * WM_SHRINK, 28);
   h1.style.fontSize = fontSize + 'px';
 }
 
 // Parked mark: desktop keeps the small corner tag. On a phone it is larger, sits at the
 // page margin, and is centred on the Menu button's row so the two read as one header line.
 const isPhone = () => VW <= 520;
-const wmEndScale = () => (isPhone() ? 0.34 : WM_END_W) / WM_FIT;
+const wmEndScale = () => (isPhone() ? 0.34 : WM_END_W) / WM_FIT / WM_SHRINK;
 const WM_LEFT_VW = () => (isPhone() ? 5 : 1.5);
 function wmTop(){
   if (!isPhone()) return 0.04;
