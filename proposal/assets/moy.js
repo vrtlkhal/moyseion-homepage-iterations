@@ -97,7 +97,7 @@
   // ---- ambient motes (gold warm / champagne / white), round soft sprites, few of them
   (function particles(){
     var c = document.querySelector('.bg-particles'); if (!c || REDUCED) return;
-    var ctx = c.getContext('2d'), W = 0, H = 0, N = PHONE() ? 50 : 115, dpr = Math.min(window.devicePixelRatio || 1, PHONE() ? 1.5 : 2);
+    var ctx = c.getContext('2d'), W = 0, H = 0, N = PHONE() ? 60 : 138, dpr = Math.min(window.devicePixelRatio || 1, PHONE() ? 1.5 : 2);
     var tints = [[197,163,85],[241,220,164],[255,255,255]];
     var sprites = tints.map(function(t){
       var s = 64, k = document.createElement('canvas'); k.width = k.height = s;
@@ -109,7 +109,7 @@
     function size(){ W = window.innerWidth; H = window.innerHeight; c.width = Math.round(W*dpr); c.height = Math.round(H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); }
     size(); window.addEventListener('resize', size);
     for (var i = 0; i < N; i++) P.push({ x:Math.random(), y:Math.random(), r:.6+Math.pow(Math.random(),2)*1.2, t:Math.random()<.5?0:(Math.random()<.5?1:2),
-      d:.15+Math.random()*.55, ph:Math.random()*6.28, tw:.4+Math.random()*.5, sp:.12+Math.random()*.18, ax:.006+Math.random()*.01, ay:.008+Math.random()*.014 });
+      d:.15+Math.random()*.55, ph:Math.random()*6.28, tw:.4+Math.random()*.5, sp:.2+Math.random()*.28, ax:.012+Math.random()*.02, ay:.016+Math.random()*.028 });
     function frame(ms){
       var time = ms / 1000, sy = window.scrollY;
       ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation = 'lighter';
